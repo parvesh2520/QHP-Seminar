@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DATABASE_URL=sqlite:///./virtual_fly_lab.db
+      - CORS_ORIGINS=["http://localhost:5173", "http://localhost:3000", "http://localhost:80"]
+    volumes:
+      - backend_data:/app/data_store
+
+  frontend:
+    build:
+      context: ./virtual-fly-lab
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
