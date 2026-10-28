@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-ink-950 text-ink-200 font-sans antialiased;
+    font-size: 13px;
+    color-scheme: dark;
+  }
+  :focus-visible { outline: 2px solid #3987e5; outline-offset: 1px; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #3a3d42; border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  input[type='number']::-webkit-inner-spin-button { opacity: 0.4; }
+}
+
+@layer components {
+  .panel-title { @apply text-2xs font-semibold uppercase tracking-[0.08em] text-ink-400; }
+  .field-input {
+    @apply h-7 w-full rounded border border-ink-700 bg-ink-900 px-2 text-[12px] text-ink-100
+      placeholder:text-ink-500 hover:border-ink-600 focus:border-accent focus:outline-none;
+  }
+  .btn {
+    @apply inline-flex h-7 items-center justify-center gap-1.5 rounded border px-2.5 text-[12px] font-medium
+      transition-colors disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-default { @apply border-ink-700 bg-ink-850 text-ink-200 hover:border-ink-600 hover:bg-ink-800; }
+  .btn-primary { @apply border-accent bg-accent text-white hover:bg-[#4a93ea]; }
+  .btn-ghost { @apply border-transparent text-ink-300 hover:bg-ink-800 hover:text-ink-100; }
+  .num { @apply font-mono tabular-nums; }
+}
