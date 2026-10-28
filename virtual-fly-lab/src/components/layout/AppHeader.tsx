@@ -1,6 +1,6 @@
 import { BookOpen, RotateCcw } from 'lucide-react';
 import { useRef } from 'react';
-import { selectActiveExperiment, useLabStore, type Tab } from '../../store/labStore';
+import { selectActiveExperiment, useLabStore, type DatasetChoice, type Tab } from '../../store/labStore';
 import { ModelInfoDialog } from './ModelInfoDialog';
 
 const TABS: { id: Tab; label: string }[] = [
@@ -10,6 +10,8 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 export function AppHeader() {
+  const activeDataset = useLabStore((s) => s.activeDataset);
+  const setDataset = useLabStore((s) => s.setDataset);
   const network = useLabStore((s) => s.network);
   const tab = useLabStore((s) => s.tab);
   const setTab = useLabStore((s) => s.setTab);
@@ -52,13 +54,32 @@ export function AppHeader() {
       </nav>
 
       <div className="flex min-w-0 items-center gap-2 text-[11.5px]">
-        <span className="text-ink-500">Workspace</span>
-        <span className="truncate text-ink-200">{network.metadata.name}</span>
-        <span className="text-ink-600">/</span>
-        <span className="font-mono text-ink-200">{active ? active.id : 'no run selected'}</span>
-        <span className="rounded border border-[#c98500]/50 bg-[#c98500]/10 px-1.5 py-px text-[10.5px] font-medium text-[#e3b65c]" title={network.metadata.description}>
-          Synthetic demo network
-        </span>
+        <label htmlFor="dataset-select" className="text-ink-500">Brain Data:</label>
+        <select
+          id="dataset-select"
+          aria-label="Active Connectome Dataset"
+          className="field-input h-7 w-auto py-0 font-medium text-ink-100"
+          value={activeDataset}
+          onChange={(e) => setDataset(e.target.value as DatasetChoice)}
+        >
+          <option value="flywire">🧠 FlyWire Adult Fly Brain (v783 Real Biology)</option>
+          <option value="synthetic">🔬 Synthetic Demo Network</option>
+        </select>
+        {active && (
+          <>
+            <span className="text-ink-600">/</span>
+            <span className="font-mono text-ink-200">{active.id}</span>
+          </>
+        )}
+        {network.metadata.source === 'connectome-subset' ? (
+          <span className="rounded border border-[#199e70]/60 bg-[#199e70]/15 px-1.5 py-0.5 text-[10.5px] font-semibold text-[#3cd094]" title={network.metadata.description}>
+            ● Real FlyWire Connectome
+          </span>
+        ) : (
+          <span className="rounded border border-[#c98500]/50 bg-[#c98500]/10 px-1.5 py-0.5 text-[10.5px] font-medium text-[#e3b65c]" title={network.metadata.description}>
+            Synthetic demo network
+          </span>
+        )}
       </div>
 
       <div className="ml-auto flex items-center gap-2">

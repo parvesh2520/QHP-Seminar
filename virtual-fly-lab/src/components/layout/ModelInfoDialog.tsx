@@ -26,14 +26,29 @@ export const ModelInfoDialog = forwardRef<HTMLDialogElement>(function ModelInfoD
       </div>
       <div className="space-y-4 px-5 py-4 text-[12.5px] leading-relaxed">
         <section>
-          <h3 className="panel-title mb-1.5">Scope and limitations</h3>
-          <ul className="list-disc space-y-1 pl-4 text-ink-300">
-            <li>The network is a <strong className="text-ink-100">synthetic demo network</strong> of {network.neurons.length} neurons and {network.connections.length} directed connections, generated from simple class-level wiring rules. It is not the reconstructed fruit-fly brain.</li>
-            <li>This version does <strong className="text-ink-100">not</strong> load the FlyWire connectome. Neuron IDs (VFL-xxxx) and class names are invented for this demo and do not refer to real cell types.</li>
-            <li>Connection weights are illustrative. 3D positions are layout coordinates in arbitrary units, not anatomy.</li>
-            <li>The simplified LIF model and all parameters are toy values chosen for interpretable activity, not experimentally calibrated.</li>
-            <li>Simulation outcomes depend on these assumptions. Results are model-generated predictions and do not establish biological causality.</li>
-          </ul>
+          <h3 className="panel-title mb-1.5">Connectome Dataset & Provenance</h3>
+          {network.metadata.source === 'connectome-subset' ? (
+            <ul className="list-disc space-y-1.5 pl-4 text-ink-300">
+              <li>
+                <strong className="text-ink-100">FlyWire Adult Drosophila Connectome (v783)</strong>: Extracted from the complete EM reconstructed adult fruit fly brain (FlyWire Consortium, Princeton & Cambridge; published in <em>Nature 2024</em>: Dorkenwald et al., Schlegel et al.).
+              </li>
+              <li>
+                <strong className="text-ink-100">Biological Circuits</strong>: Includes the complete Olfactory pathway (ORNs & Antennal Lobe PNs/LNs), Mushroom Body associative center (Kenyon Cells), the famous <strong className="text-ink-100">giant APL feedback inhibitory neuron</strong> (GABAergic gain control), Central Complex compass network (E-PG/P-EN), and Descending Motor command neurons (DNs).
+              </li>
+              <li>
+                <strong className="text-ink-100">Real IDs & Coordinates</strong>: Carries authentic 64-bit FlyWire root IDs (e.g. <span className="font-mono text-ink-200">7205759406...</span>), biological cell types, and spatial coordinates mapped to the FAFB/JRC2018 adult fly brain template.
+              </li>
+              <li>
+                <strong className="text-ink-100">Synapse Calibration</strong>: While structural synapse counts are genuine, physiological conductances in the LIF model are uncalibrated voltage-equivalent proxies.
+              </li>
+            </ul>
+          ) : (
+            <ul className="list-disc space-y-1 pl-4 text-ink-300">
+              <li>The network is a <strong className="text-ink-100">synthetic demo network</strong> of {network.neurons.length} neurons and {network.connections.length} directed connections, generated from simple class-level wiring rules.</li>
+              <li>Neuron IDs (VFL-xxxx) are synthetic placeholders. Connection weights are illustrative.</li>
+              <li>Use the dataset switcher in the top bar to activate the authentic <strong>FlyWire Adult Drosophila Brain Connectome</strong>.</li>
+            </ul>
+          )}
         </section>
 
         <section>

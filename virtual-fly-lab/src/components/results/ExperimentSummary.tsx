@@ -25,7 +25,11 @@ export function ExperimentSummary({ record }: { record: ExperimentRecord }) {
   return (
     <Card
       title={`Experiment summary · ${record.id}`}
-      subtitle="Model-generated prediction from a synthetic toy network (single deterministic run; no statistical test applied)."
+      subtitle={
+        network.metadata.source === 'connectome-subset'
+          ? 'LIF simulation on reconstructed FlyWire adult Drosophila connectome (single deterministic run; no statistical test applied).'
+          : 'Model-generated prediction from a synthetic toy network (single deterministic run; no statistical test applied).'
+      }
     >
       <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11.5px] sm:grid-cols-4">
         <Item label="Target neuron" value={<span className="font-mono">{target.id} · {target.label}</span>} />

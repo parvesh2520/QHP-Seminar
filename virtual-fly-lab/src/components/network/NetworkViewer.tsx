@@ -48,8 +48,17 @@ export function NetworkViewer() {
 
       {/* Title + selection overlay */}
       <div className="pointer-events-none absolute left-3 top-3 flex max-w-[60%] flex-col gap-2">
-        <div className="text-[11px] text-ink-400">
-          Sample neural network visualization <span className="text-ink-500">· layout coordinates, not anatomy</span>
+        <div className="text-[11px] text-ink-300">
+          {network.metadata.source === 'connectome-subset' ? (
+            <span>
+              🧠 <strong className="text-white">FlyWire Adult Drosophila Brain Connectome</strong>{' '}
+              <span className="text-[#3cd094]">· FAFB/JRC2018 biological coordinates</span>
+            </span>
+          ) : (
+            <span>
+              Sample neural network visualization <span className="text-ink-500">· layout coordinates, not anatomy</span>
+            </span>
+          )}
         </div>
         {selected ? (
           <div className="w-60 rounded border border-ink-700 bg-ink-900/90 px-3 py-2">

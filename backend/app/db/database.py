@@ -27,19 +27,26 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def init_db() -> None:
-    """Create tables and ensure the synthetic demo network is seeded."""
+    """Create tables and ensure FlyWire real connectome and synthetic network are seeded."""
     from app.models.network import NetworkModel
+    from app.db.repository import NetworkRepository
 
     Base.metadata.create_all(bind=engine)
 
-    # Seed synthetic network if not already present
     db = SessionLocal()
     try:
+        # 1. Seed Real Adult Drosophila FlyWire Connectome
+        from app.data.flywire_network import generate_flywire_network
+        existing_fw = db.query(NetworkModel).filter(NetworkModel.id == "flywire-drosophila-v783").first()
+        if not existing_fw:
+            fw_def = generate_flywire_network()
+            NetworkRepository.save_network_definition(db, fw_def)
+
+        # 2. Seed synthetic network
         from app.data.synthetic_network import generate_synthetic_network
-        existing = db.query(NetworkModel).filter(NetworkModel.id == "synthetic-fly-v1").first()
-        if not existing:
+        existing_synth = db.query(NetworkModel).filter(NetworkModel.id == "synthetic-fly-v1").first()
+        if not existing_synth:
             synthetic_def = generate_synthetic_network()
-            from app.db.repository import NetworkRepository
             NetworkRepository.save_network_definition(db, synthetic_def)
     finally:
         db.close()

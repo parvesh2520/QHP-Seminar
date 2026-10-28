@@ -81,8 +81,8 @@ export function NetworkExplorer() {
                 className={`flex w-full items-center gap-2 px-3 py-[3px] text-left text-[12px] ${sel ? 'bg-ink-800 text-ink-100' : 'text-ink-300 hover:bg-ink-850'}`}
               >
                 <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: classById.get(n.classId)!.color }} />
-                <span className="font-mono text-[11.5px]">{n.id}</span>
-                <span className="ml-auto font-mono text-[11px] text-ink-400">{n.label}</span>
+                <span className="truncate font-mono text-[11px]" title={n.id}>{n.id}</span>
+                <span className="ml-auto shrink-0 font-mono text-[11px] text-ink-400">{n.label}</span>
               </button>
             </li>
           );
