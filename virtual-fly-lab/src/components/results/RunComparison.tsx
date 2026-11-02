@@ -39,19 +39,19 @@ export function RunComparison({ a, b }: { a: Complete; b: Complete }) {
 
   return (
     <Card
-      title={`Run comparison · ${a.id} (A) vs ${b.id} (B)`}
-      subtitle={sameSettings ? 'Both runs share length, time step and seed, so differences reflect the interventions.' : 'Runs differ in length, time step or seed; differences may reflect simulation settings as well as the interventions.'}
+      title={`Comparing ${a.id} (A) with ${b.id} (B)`}
+      subtitle={sameSettings ? 'Both runs share length, time step and seed, so any difference comes from the experiments themselves.' : 'Runs differ in length, time step or seed; differences may reflect simulation settings as well as the interventions.'}
       actions={
-        <button type="button" className="btn btn-ghost h-6 px-1.5" onClick={() => clear(null)} aria-label="Close run comparison">
-          <X size={13} />
+        <button type="button" className="btn btn-ghost h-7 px-1.5" onClick={() => clear(null)} aria-label="Close run comparison">
+          <X size={16} strokeWidth={1.5} />
         </button>
       }
     >
       <div className="grid gap-3 xl:grid-cols-[3fr_2fr]">
         <div>
           <div className="mb-1 flex items-center justify-between gap-2">
-            <span className="text-[11.5px] text-ink-400">Intervention-run activity</span>
-            <select aria-label="Population compared" className="field-input h-6 w-44 text-[11.5px]" value={popId} onChange={(e) => setPopId(e.target.value)}>
+            <span className="text-[13px] text-ink-400">Intervention-run activity</span>
+            <select aria-label="Population compared" className="field-input w-48" value={popId} onChange={(e) => setPopId(e.target.value)}>
               {network.populations.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.label}
@@ -62,13 +62,13 @@ export function RunComparison({ a, b }: { a: Complete; b: Complete }) {
           <PopulationActivityChart series={series} network={network} populationId={popId} height={220} />
         </div>
         <div>
-          <dl className="mb-2 space-y-1 text-[11.5px]">
+          <dl className="mb-2 space-y-1 text-[13px]">
             <div><dt className="inline text-[#9cc3f2]">A </dt><dd className="inline font-mono text-ink-300">{describe(a)}</dd></div>
             <div><dt className="inline text-[#e8a184]">B </dt><dd className="inline font-mono text-ink-300">{describe(b)}</dd></div>
           </dl>
-          <table className="w-full text-[12px]">
+          <table className="w-full text-[13px]">
             <thead>
-              <tr className="border-b border-ink-700 text-left text-[11px] text-ink-500">
+              <tr className="border-b border-ink-700 text-left text-[12px] text-ink-500">
                 <th className="py-1 font-normal">Measure</th>
                 <th className="py-1 text-right font-normal">A</th>
                 <th className="py-1 text-right font-normal">B</th>

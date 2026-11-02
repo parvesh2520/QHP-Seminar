@@ -22,10 +22,9 @@ export default {
         outgoing: '#e0a338',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['ui-monospace', 'Cascadia Mono', 'SF Mono', 'JetBrains Mono', 'Consolas', 'monospace'],
+        sans: ['IBM Plex Sans', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'Cascadia Mono', 'SF Mono', 'JetBrains Mono', 'Consolas', 'monospace'],
       },
-      fontSize: { '2xs': ['10.5px', '14px'] },
     },
   },
   plugins: [],

@@ -21,6 +21,8 @@ export interface NeuronClass {
   id: string;
   label: string;
   description: string;
+  /** One plain-language line for students. */
+  role?: string;
   /** Sign of this class's outgoing synapses. */
   transmitter: ConnectionType;
   color: string;

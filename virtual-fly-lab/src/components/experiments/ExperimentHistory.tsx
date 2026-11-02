@@ -19,23 +19,23 @@ export function ExperimentHistory() {
 
   return (
     <Card
-      title="Experiment history"
-      subtitle={`Stored in memory for this session only (up to ${MAX_HISTORY} runs; cleared on reload). Click a row to inspect it.`}
+      title="Your experiments"
+      subtitle={`Click a row to see its result. Kept until you reload the page (up to ${MAX_HISTORY} runs).`}
     >
       {experiments.length === 0 ? (
-        <p className="py-2 text-[12px] text-ink-500">No runs yet.</p>
+        <p className="py-2 text-[13px] text-ink-500">No runs yet. Press Run experiment on the right to start.</p>
       ) : (
-        <div className="max-h-56 overflow-auto">
-          <table className="w-full min-w-[720px] text-[12px]">
+        <div className="max-h-64 overflow-auto">
+          <table className="w-full min-w-[760px] text-[13px]">
             <thead className="sticky top-0 bg-ink-900">
-              <tr className="border-b border-ink-700 text-left text-[11px] text-ink-500">
+              <tr className="border-b border-ink-700 text-left text-[12px] text-ink-500">
                 <th className="py-1 pr-2 font-normal">ID</th>
                 <th className="py-1 pr-2 font-normal">Target</th>
                 <th className="py-1 pr-2 font-normal">Mode</th>
-                <th className="py-1 pr-2 font-normal">Window · intensity</th>
-                <th className="py-1 pr-2 font-normal">Output population</th>
-                <th className="py-1 pr-2 text-right font-normal">Δ output</th>
-                <th className="py-1 pr-2 text-right font-normal">Δ total</th>
+                <th className="py-1 pr-2 font-normal">When · strength</th>
+                <th className="py-1 pr-2 font-normal">Measured</th>
+                <th className="py-1 pr-2 text-right font-normal">Δ measured</th>
+                <th className="py-1 pr-2 text-right font-normal">Δ whole brain</th>
                 <th className="py-1 pr-2 font-normal">Status</th>
                 <th className="py-1 text-right font-normal">Actions</th>
               </tr>
@@ -64,8 +64,8 @@ export function ExperimentHistory() {
                       >
                         {e.id}
                       </button>
-                      {isCompare && <span className="ml-1.5 rounded border border-[#d95926]/60 px-1 text-[10px] text-[#e8a184]">B</span>}
-                      {isActive && compareId && <span className="ml-1.5 rounded border border-accent/60 px-1 text-[10px] text-[#9cc3f2]">A</span>}
+                      {isCompare && <span className="ml-1.5 rounded border border-[#d95926]/60 px-1 text-[11px] text-[#e8a184]">B</span>}
+                      {isActive && compareId && <span className="ml-1.5 rounded border border-accent/60 px-1 text-[11px] text-[#9cc3f2]">A</span>}
                     </td>
                     <td className="py-1 pr-2 font-mono text-ink-300">{neuronById.get(e.config.targetNeuronId)?.label}</td>
                     <td className="py-1 pr-2 text-ink-300">{e.config.mode === 'excite' ? 'Excite' : 'Suppress'}</td>
@@ -94,13 +94,13 @@ export function ExperimentHistory() {
                           disabled={isActive || e.status !== 'complete'}
                           pressed={isCompare}
                         >
-                          <GitCompareArrows size={13} />
+                          <GitCompareArrows size={16} strokeWidth={1.5} />
                         </IconButton>
                         <IconButton label={`Rerun ${e.id} as a new experiment`} onClick={() => void rerun(e.id)} disabled={anyRunning}>
-                          <RotateCw size={13} />
+                          <RotateCw size={16} strokeWidth={1.5} />
                         </IconButton>
                         <IconButton label={`Delete ${e.id}`} onClick={() => remove(e.id)} disabled={e.status === 'running'}>
-                          <Trash2 size={13} />
+                          <Trash2 size={16} strokeWidth={1.5} />
                         </IconButton>
                       </div>
                     </td>
@@ -119,7 +119,7 @@ function IconButton({ label, onClick, disabled, pressed, children }: { label: st
   return (
     <button
       type="button"
-      className={`btn btn-ghost h-6 px-1.5 ${pressed ? 'bg-ink-700 text-ink-100' : ''}`}
+      className={`btn btn-ghost h-7 px-1.5 ${pressed ? 'bg-ink-700 text-ink-100' : ''}`}
       onClick={onClick}
       disabled={disabled}
       aria-label={label}

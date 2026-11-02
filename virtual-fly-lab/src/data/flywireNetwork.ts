@@ -18,6 +18,7 @@ import { buildNetwork } from './networkLoader';
 export const FLYWIRE_CLASSES: NeuronClass[] = [
   {
     id: 'ORN',
+    role: 'Smell sensors on the antenna',
     label: 'Olfactory Receptor Neuron',
     transmitter: 'excitatory',
     color: '#3987e5',
@@ -25,6 +26,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'PN',
+    role: 'Carry smell signals deeper into the brain',
     label: 'Projection Neuron',
     transmitter: 'excitatory',
     color: '#d95926',
@@ -32,6 +34,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'LN',
+    role: 'Quiet neighbouring smell channels',
     label: 'Local Interneuron',
     transmitter: 'inhibitory',
     color: '#199e70',
@@ -39,6 +42,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'KC',
+    role: 'Learning and memory centre',
     label: 'Kenyon Cell',
     transmitter: 'excitatory',
     color: '#c98500',
@@ -46,6 +50,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'APL',
+    role: 'One giant cell that calms the memory centre',
     label: 'Anterior Paired Lateral',
     transmitter: 'inhibitory',
     color: '#d55181',
@@ -53,6 +58,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'MBON',
+    role: 'Read memories out: approach or avoid',
     label: 'Mushroom Body Output',
     transmitter: 'excitatory',
     color: '#008300',
@@ -60,6 +66,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'CX',
+    role: 'Internal compass for heading',
     label: 'Central Complex Compass',
     transmitter: 'excitatory',
     color: '#9085e9',
@@ -67,6 +74,7 @@ export const FLYWIRE_CLASSES: NeuronClass[] = [
   },
   {
     id: 'DN',
+    role: 'Send movement commands to the body',
     label: 'Descending Motor Neuron',
     transmitter: 'excitatory',
     color: '#e66767',

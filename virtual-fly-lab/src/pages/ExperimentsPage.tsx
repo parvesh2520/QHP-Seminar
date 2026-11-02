@@ -12,8 +12,8 @@ export function ExperimentsPage() {
   const compare = useLabStore((s) => s.experiments.find((e) => e.id === s.compareExperimentId));
 
   return (
-    <div className="h-full overflow-y-auto p-3">
-      <div className="mx-auto max-w-[1400px] space-y-3">
+    <div className="h-full overflow-y-auto p-4">
+      <div className="mx-auto max-w-[1400px] space-y-4">
         <ExperimentHistory />
         {isComplete(active) && isComplete(compare) && <RunComparison a={active} b={compare} />}
         <ResultsWorkspace record={active} />

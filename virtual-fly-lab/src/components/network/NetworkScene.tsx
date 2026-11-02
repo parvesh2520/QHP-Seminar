@@ -185,7 +185,7 @@ export function NetworkScene({ playback, playing, restartToken, timeReadoutRef }
           return (
             <Html key={n.id} position={n.position} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
               <span
-                className={`relative -top-3.5 whitespace-nowrap font-mono text-[10px] ${i === selectedIndex ? 'font-semibold text-white' : 'text-ink-300'}`}
+                className={`relative -top-3.5 whitespace-nowrap font-mono text-[11px] ${i === selectedIndex ? 'font-semibold text-white' : 'text-ink-300'}`}
               >
                 {n.label}
               </span>
@@ -196,23 +196,23 @@ export function NetworkScene({ playback, playing, restartToken, timeReadoutRef }
         selectedIndex === null &&
         centroids.map((c) => (
           <Html key={c.id} position={c.position} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
-            <span className="whitespace-nowrap font-mono text-[10px] font-semibold" style={{ color: classById.get(c.id)!.color }}>
+            <span className="whitespace-nowrap font-mono text-[11px] font-semibold" style={{ color: classById.get(c.id)!.color }}>
               {c.id}
             </span>
           </Html>
         ))}
       {hovered !== null && hovered !== selectedIndex && (
         <Html position={network.neurons[hovered].position} center zIndexRange={[20, 10]} style={{ pointerEvents: 'none' }}>
-          <span className="relative -top-4 whitespace-nowrap rounded border border-ink-600 bg-ink-850 px-1.5 py-0.5 font-mono text-[10px] text-ink-100">
+          <span className="relative -top-4 whitespace-nowrap rounded border border-ink-600 bg-ink-850 px-1.5 py-0.5 font-mono text-[11px] text-ink-100">
             {network.neurons[hovered].label} · {network.neurons[hovered].id}
           </span>
         </Html>
       )}
       <Html position={[-3.4, -3.1, 0]} center style={{ pointerEvents: 'none' }}>
-        <span className="font-mono text-[10px] text-ink-500">L</span>
+        <span className="font-mono text-[11px] text-ink-500">L</span>
       </Html>
       <Html position={[3.4, -3.1, 0]} center style={{ pointerEvents: 'none' }}>
-        <span className="font-mono text-[10px] text-ink-500">R</span>
+        <span className="font-mono text-[11px] text-ink-500">R</span>
       </Html>
     </>
   );

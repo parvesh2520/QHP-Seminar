@@ -9,10 +9,10 @@ const loadPlotly = () => (plotlyPromise ??= import('plotly.js-dist-min').then((m
 const BASE_LAYOUT: Partial<Layout> = {
   paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)',
-  font: { family: 'Inter, ui-sans-serif, system-ui, Segoe UI, sans-serif', size: 11, color: '#b4b7bc' },
+  font: { family: 'IBM Plex Sans, ui-sans-serif, system-ui, Segoe UI, sans-serif', size: 12, color: '#b4b7bc' },
   margin: { l: 56, r: 12, t: 8, b: 40 },
-  hoverlabel: { bgcolor: '#1e2023', bordercolor: '#3a3d42', font: { color: '#eceded', size: 11 } },
-  legend: { orientation: 'h', x: 0, y: 1.02, yanchor: 'bottom', font: { size: 11 }, bgcolor: 'rgba(0,0,0,0)' },
+  hoverlabel: { bgcolor: '#1e2023', bordercolor: '#3a3d42', font: { color: '#eceded', size: 12 } },
+  legend: { orientation: 'h', x: 0, y: 1.02, yanchor: 'bottom', font: { size: 12 }, bgcolor: 'rgba(0,0,0,0)' },
 };
 
 export const AXIS = {
@@ -22,8 +22,8 @@ export const AXIS = {
   tickcolor: '#3a3d42',
   ticks: 'outside' as const,
   ticklen: 3,
-  tickfont: { family: 'ui-monospace, Cascadia Mono, Consolas, monospace', size: 10.5 },
-  title: { font: { size: 11, color: '#8a8e95' } },
+  tickfont: { family: 'IBM Plex Mono, ui-monospace, Consolas, monospace', size: 12 },
+  title: { font: { size: 12, color: '#8a8e95' } },
 };
 
 const CONFIG: Partial<Config> = {
@@ -76,7 +76,7 @@ export function PlotlyChart({ data, layout, height, ariaLabel }: Props) {
     <div className="relative" style={{ height }} role="img" aria-label={ariaLabel}>
       <div ref={ref} className="h-full w-full" />
       {state !== 'ready' && (
-        <div className="absolute inset-0 flex items-center justify-center text-[12px] text-ink-500">
+        <div className="absolute inset-0 flex items-center justify-center text-[13px] text-ink-500">
           {state === 'loading' ? 'Rendering chart…' : 'Chart could not be rendered.'}
         </div>
       )}

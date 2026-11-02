@@ -14,16 +14,16 @@ import { RasterPlot } from './RasterPlot';
 export function ResultsWorkspace({ record }: { record: ExperimentRecord | null }) {
   if (!record) {
     return (
-      <EmptyState icon={FlaskConical} title="No experiment selected">
-        Configure an intervention in the Experiment panel and choose <span className="text-ink-200">Run experiment</span>. Each run simulates a
-        matched baseline and the intervention, then compares them.
+      <EmptyState icon={FlaskConical} title="No experiment yet">
+        Set up an experiment in the panel on the right and press <span className="text-ink-200">Run experiment</span>. The brain is simulated twice, once
+        untouched and once with your change, and the results show up here.
       </EmptyState>
     );
   }
   if (record.status === 'running') {
     return (
-      <div className="flex min-h-[200px] items-center justify-center gap-2 text-[12.5px] text-ink-300" role="status">
-        <Loader2 size={16} className="animate-spin" aria-hidden /> Simulating baseline and intervention for {record.id}…
+      <div className="flex min-h-[200px] items-center justify-center gap-2 text-[14px] text-ink-300" role="status">
+        <Loader2 size={16} className="animate-spin" aria-hidden /> Simulating {record.id}: control run and run with your change…
       </div>
     );
   }
@@ -47,23 +47,23 @@ function CompletedResults({ record }: { record: Required<ExperimentRecord> }) {
 
   const series: Series[] = useMemo(
     () => [
-      { name: 'Baseline', color: CONDITION_COLORS.baseline, result: record.baseline },
-      { name: 'Intervention', color: CONDITION_COLORS.intervention, result: record.intervention },
+      { name: 'Control', color: CONDITION_COLORS.baseline, result: record.baseline },
+      { name: 'With change', color: CONDITION_COLORS.intervention, result: record.intervention },
     ],
     [record],
   );
   const topChanges = record.summary.neuronDeltas.slice(0, 12);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <ExperimentSummary record={record} />
 
-      <div className="grid gap-3 xl:grid-cols-[3fr_2fr]">
+      <div className="grid gap-4 xl:grid-cols-[3fr_2fr]">
         <Card
-          title="Population activity"
-          subtitle="Baseline vs intervention, same axes."
+          title="Activity over time"
+          subtitle="How many spikes happen at each moment. The shaded band is when the push is on."
           actions={
-            <select aria-label="Population shown in activity chart" className="field-input h-6 w-44 text-[11.5px]" value={popId ?? ''} onChange={(e) => setPopId(e.target.value || null)}>
+            <select aria-label="Population shown in activity chart" className="field-input w-48" value={popId ?? ''} onChange={(e) => setPopId(e.target.value || null)}>
               <option value="">Whole network</option>
               {network.populations.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -75,31 +75,31 @@ function CompletedResults({ record }: { record: Required<ExperimentRecord> }) {
         >
           <PopulationActivityChart series={series} network={network} populationId={popId} />
         </Card>
-        <Card title="Spikes per population" subtitle="Whole-run spike counts.">
+        <Card title="Spikes per brain region" subtitle="Total over the whole run">
           <PopulationBarChart summary={record.summary} />
         </Card>
       </div>
 
-      <Card title="Spike raster" subtitle="Each tick is one spike. Rows grouped by class; the stimulated neuron is drawn in white and marked with a dotted row line.">
-        <div className="panel-title mb-1">Baseline</div>
-        <RasterPlot result={record.baseline} network={network} targetId={record.config.targetNeuronId} title="Baseline" height={280} />
-        <div className="panel-title mb-1 mt-3">Intervention</div>
-        <RasterPlot result={record.intervention} network={network} targetId={record.config.targetNeuronId} title="Intervention" height={280} />
+      <Card title="Every spike, neuron by neuron" subtitle="Each row is one neuron and each tick is one spike. The target neuron is drawn in white with a dotted line.">
+        <div className="panel-title mb-2">Control · nothing changed</div>
+        <RasterPlot result={record.baseline} network={network} targetId={record.config.targetNeuronId} title="Control" height={280} />
+        <div className="panel-title mb-2 mt-4">With change · your experiment</div>
+        <RasterPlot result={record.intervention} network={network} targetId={record.config.targetNeuronId} title="With change" height={280} />
       </Card>
 
-      <div className="grid gap-3 xl:grid-cols-[3fr_2fr]">
+      <div className="grid gap-4 xl:grid-cols-[3fr_2fr]">
         <Card
-          title="Selected neuron activity"
+          title="Voltage of one neuron"
           subtitle={
             <>
-              Membrane potential (sampled every <span className="num">{record.intervention.sampleIntervalMs.toFixed(2)} ms</span>); ticks above the threshold mark spike times.
+              Voltage rises until it hits the threshold, then the neuron fires and resets. Sampled every <span className="num">{record.intervention.sampleIntervalMs.toFixed(2)} ms</span>.
             </>
           }
           actions={
-            <select aria-label="Neuron shown in membrane trace" className="field-input h-6 w-44 font-mono text-[11.5px]" value={traceNeuronId} onChange={(e) => selectNeuron(e.target.value)}>
+            <select aria-label="Neuron shown in membrane trace" className="field-input w-48 font-mono" value={traceNeuronId} onChange={(e) => selectNeuron(e.target.value)}>
               {network.neurons.map((n) => (
                 <option key={n.id} value={n.id}>
-                  {n.id} · {n.label}
+                  {n.label}
                   {n.id === record.config.targetNeuronId ? ' (target)' : ''}
                 </option>
               ))}
@@ -108,16 +108,16 @@ function CompletedResults({ record }: { record: Required<ExperimentRecord> }) {
         >
           <MembraneChart series={series} network={network} neuronId={traceNeuronId} />
         </Card>
-        <Card title="Largest per-neuron changes" subtitle="Intervention minus baseline spike count.">
+        <Card title="Neurons that changed most" subtitle="Spikes with change minus spikes in control">
           {topChanges.length === 0 ? (
-            <p className="py-4 text-center text-[12px] text-ink-500">No neuron changed its spike count.</p>
+            <p className="py-4 text-center text-[13px] text-ink-500">No neuron changed its spike count.</p>
           ) : (
-            <table className="w-full text-[12px]">
+            <table className="w-full text-[13px]">
               <thead>
-                <tr className="border-b border-ink-700 text-left text-[11px] text-ink-500">
+                <tr className="border-b border-ink-700 text-left text-[12px] text-ink-500">
                   <th className="py-1 font-normal">Neuron</th>
-                  <th className="py-1 text-right font-normal">Base</th>
-                  <th className="py-1 text-right font-normal">Interv.</th>
+                  <th className="py-1 text-right font-normal">Control</th>
+                  <th className="py-1 text-right font-normal">Change</th>
                   <th className="py-1 text-right font-normal">Δ</th>
                 </tr>
               </thead>
@@ -130,7 +130,7 @@ function CompletedResults({ record }: { record: Required<ExperimentRecord> }) {
                         <button type="button" onClick={() => selectNeuron(n.id)} className="flex items-center gap-1.5 font-mono text-ink-200 hover:text-white hover:underline">
                           <span className="h-1.5 w-1.5 rounded-full" style={{ background: classById.get(n.classId)!.color }} />
                           {n.label}
-                          {n.id === record.config.targetNeuronId && <span className="text-[10px] text-ink-500">target</span>}
+                          {n.id === record.config.targetNeuronId && <span className="text-[11px] text-ink-500">target</span>}
                         </button>
                       </td>
                       <td className="num py-1 text-right text-ink-400">{d.baseline}</td>
@@ -144,8 +144,8 @@ function CompletedResults({ record }: { record: Required<ExperimentRecord> }) {
               </tbody>
             </table>
           )}
-          <p className="mt-1.5 text-[10.5px] text-ink-500">
-            {record.summary.neuronDeltas.length} neuron(s) changed in total. Click a neuron to inspect its trace.
+          <p className="mt-1.5 text-[12px] text-ink-500">
+            {record.summary.neuronDeltas.length} neurons changed in total. Click one to see its voltage.
           </p>
         </Card>
       </div>

@@ -129,7 +129,7 @@ export const useLabStore = create<LabState>((set, get) => ({
       experimentCounter: n,
       experiments: [record, ...s.experiments].slice(0, MAX_HISTORY),
       activeExperimentId: id,
-      tab: s.tab === 'candidates' ? 'experiments' : s.tab,
+      tab: 'experiments',
     }));
     // Match on the record object so a workspace reset during the run cannot be overwritten.
     const patch = (p: Partial<ExperimentRecord>) =>

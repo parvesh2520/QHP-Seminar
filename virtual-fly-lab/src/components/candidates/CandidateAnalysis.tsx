@@ -82,7 +82,7 @@ export function CandidateAnalysis() {
     const layout: Partial<Layout> = {
       showlegend: false,
       xaxis: { title: { text: 'Δ output spikes (intervention − baseline)' }, zeroline: true, zerolinecolor: '#5b5f66' },
-      yaxis: { autorange: 'reversed', automargin: true, tickfont: { family: 'ui-monospace, Consolas, monospace', size: 10.5 } },
+      yaxis: { autorange: 'reversed', automargin: true, tickfont: { family: 'IBM Plex Mono, ui-monospace, Consolas, monospace', size: 12 } },
       margin: { l: 80, r: 12, t: 8, b: 40 },
       bargap: 0.3,
     };
@@ -120,11 +120,11 @@ export function CandidateAnalysis() {
   );
 
   return (
-    <div className="space-y-3">
-      <Card title="Candidate screening" subtitle="Rank neurons by how strongly perturbing them changes the activity of an output population in this toy model.">
+    <div className="space-y-4">
+      <Card title="Find the neurons that matter most" subtitle="We run the same experiment on every neuron, one at a time, and rank them by how much they change the measured region.">
         <div className="grid gap-3 md:grid-cols-[1fr_1fr_1.4fr]">
-          <label className="block text-[11.5px] text-ink-300">
-            Output population
+          <label className="block text-[13px] text-ink-300">
+            Region to measure
             <select className="field-input mt-1" value={outputId} onChange={(e) => setOutputId(e.target.value)}>
               {network.populations.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -133,8 +133,8 @@ export function CandidateAnalysis() {
               ))}
             </select>
           </label>
-          <label className="block text-[11.5px] text-ink-300">
-            Candidate neurons
+          <label className="block text-[13px] text-ink-300">
+            Neurons to test
             <select className="field-input mt-1" value={candidateSet} onChange={(e) => setCandidateSet(e.target.value)}>
               <option value={ALL_OUTSIDE}>All neurons outside the output population</option>
               {network.classes.map((c) => (
@@ -144,9 +144,9 @@ export function CandidateAnalysis() {
               ))}
             </select>
           </label>
-          <div className="text-[11.5px] text-ink-300">
-            Intervention (from the Experiment panel)
-            <p className="num mt-1 rounded border border-ink-800 bg-ink-950/60 px-2 py-1 text-[11.5px] text-ink-200">
+          <div className="text-[13px] text-ink-300">
+            Push given to each one (from Experiment setup)
+            <p className="num mt-1 rounded border border-ink-800 bg-ink-950/60 px-2 py-1 text-[13px] text-ink-200">
               {config.mode === 'excite' ? 'Excite' : 'Suppress'} {config.intensity} mV · {config.stimStartMs}–{config.stimStartMs + config.stimDurationMs} ms · run {config.durationMs} ms · dt {config.dt} · seed {config.seed}
             </p>
           </div>
@@ -160,13 +160,13 @@ export function CandidateAnalysis() {
             onClick={() => void runScreening(request)}
           >
             {running ? <Loader2 size={13} className="animate-spin" aria-hidden /> : <Play size={13} aria-hidden />}
-            {running ? 'Screening…' : `Screen ${candidateIds.length} candidates`}
+            {running ? 'Testing…' : `Test ${candidateIds.length} neurons`}
           </button>
-          <span className="num text-[11px] text-ink-500">
+          <span className="num text-[12px] text-ink-500">
             {candidateIds.length + 1} simulations ({candidateIds.length} interventions + 1 shared baseline)
           </span>
           {configErrors.length > 0 && (
-            <span className="text-[11px] text-[#e59a6a]" role="alert">
+            <span className="text-[12px] text-[#e59a6a]" role="alert">
               Fix the Experiment panel first: {configErrors[0][1]}
             </span>
           )}
@@ -174,7 +174,7 @@ export function CandidateAnalysis() {
 
         {running && (
           <div className="mt-3" role="status" aria-live="polite">
-            <div className="mb-1 flex justify-between text-[11px] text-ink-400">
+            <div className="mb-1 flex justify-between text-[12px] text-ink-400">
               <span>Running candidate simulations in a background worker…</span>
               <span className="num">
                 {screening.done} / {screening.total}
@@ -186,7 +186,7 @@ export function CandidateAnalysis() {
           </div>
         )}
         {screening.status === 'error' && (
-          <p className="mt-3 text-[12px] text-[#e59a6a]" role="alert">
+          <p className="mt-3 text-[13px] text-[#e59a6a]" role="alert">
             Screening failed: {screening.error}
           </p>
         )}
@@ -195,7 +195,7 @@ export function CandidateAnalysis() {
       {screening.status === 'complete' && screening.request ? (
         <>
           {stale && (
-            <p className="rounded border border-ink-700 bg-ink-900 px-3 py-2 text-[11.5px] text-ink-300">
+            <p className="rounded border border-ink-700 bg-ink-900 px-3 py-2 text-[13px] text-ink-300">
               Intervention settings have changed since this screen ran. The ranking below reflects the earlier settings; loading a candidate restores them.
             </p>
           )}
@@ -205,13 +205,13 @@ export function CandidateAnalysis() {
               subtitle={`Output: ${network.populations.find((p) => p.id === screening.request!.outputPopulationId)!.label}. Baseline output: ${screening.results[0]?.baselineOutput ?? 0} spikes.`}
             >
               <PlotlyChart data={chart.data} layout={chart.layout} height={Math.max(220, Math.min(CHART_TOP, screening.results.length) * 20 + 60)} ariaLabel="Candidate ranking chart" />
-              <p className="mt-1 text-[10.5px] text-ink-500">Blue: output increased. Orange: output decreased.</p>
+              <p className="mt-1 text-[12px] text-ink-500">Blue: output increased. Orange: output decreased.</p>
             </Card>
             <Card title="Ranking table" subtitle="Click a column to sort. Load a candidate to inspect it as a full experiment.">
               <div className="max-h-[440px] overflow-auto">
-                <table className="w-full min-w-[560px] text-[12px]">
+                <table className="w-full min-w-[560px] text-[13px]">
                   <thead className="sticky top-0 bg-ink-900">
-                    <tr className="border-b border-ink-700 text-left text-[11px] text-ink-500">
+                    <tr className="border-b border-ink-700 text-left text-[12px] text-ink-500">
                       <th className="py-1 font-normal">#</th>
                       {header('neuronId', 'Neuron', false)}
                       {header('delta', 'Δ output')}
@@ -234,7 +234,7 @@ export function CandidateAnalysis() {
                             <button type="button" onClick={() => selectNeuron(n.id)} className="flex items-center gap-1.5 font-mono text-ink-200 hover:text-white hover:underline">
                               <span className="h-1.5 w-1.5 rounded-full" style={{ background: classById.get(n.classId)!.color }} />
                               {n.label}
-                              <span className="text-[10.5px] text-ink-500">{n.id}</span>
+                              <span className="text-[12px] text-ink-500">{n.id}</span>
                             </button>
                           </td>
                           <td className="num py-1 text-right"><Delta value={r.delta} /></td>
@@ -242,7 +242,7 @@ export function CandidateAnalysis() {
                           <td className="num py-1 text-right text-ink-400">{pct(r.percentChange)}</td>
                           <td className="num py-1 text-right text-ink-400">{r.totalDelta > 0 ? '+' : ''}{r.totalDelta}</td>
                           <td className="py-1 text-right">
-                            <button type="button" className="btn btn-ghost h-6 px-1.5 text-[11px]" onClick={() => load(r)} aria-label={`Load ${n.label} into experiment configuration`}>
+                            <button type="button" className="btn btn-ghost h-6 px-1.5 text-[12px]" onClick={() => load(r)} aria-label={`Load ${n.label} into experiment configuration`}>
                               <Upload size={12} aria-hidden /> Load
                             </button>
                           </td>
@@ -257,16 +257,16 @@ export function CandidateAnalysis() {
         </>
       ) : (
         !running && (
-          <Card title="Ranking">
-            <EmptyState icon={ListOrdered} title="No screen has been run">
-              Choose an output population and a candidate set, then run the screen. Each candidate receives the intervention configured in the Experiment panel.
+          <Card title="Ranking: biggest effect first">
+            <EmptyState icon={ListOrdered} title="Nothing tested yet">
+              Pick a region to measure and which neurons to test, then press Test. Each neuron gets the same push you set up on the right.
             </EmptyState>
           </Card>
         )
       )}
 
-      <Card title="Method and limitations">
-        <ol className="list-decimal space-y-1 pl-4 text-[12px] leading-relaxed text-ink-300">
+      <Card title="How the ranking is made">
+        <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed text-ink-300">
           <li>One baseline run (no intervention) is simulated with the current seed, length and time step.</li>
           <li>For each candidate, the same intervention is applied to that neuron alone, with identical background input (same seed).</li>
           <li>
@@ -274,7 +274,7 @@ export function CandidateAnalysis() {
             whole run. Candidates are ranked by <span className="font-mono text-ink-100">|Δ|</span>.
           </li>
         </ol>
-        <ul className="mt-2 list-disc space-y-1 pl-4 text-[11.5px] leading-relaxed text-ink-400">
+        <ul className="mt-2 list-disc space-y-1 pl-4 text-[13px] leading-relaxed text-ink-400">
           <li>This is an exhaustive single-neuron perturbation screen, not machine learning or optimisation. Combinations of neurons are not tested.</li>
           <li>Each value comes from one deterministic simulation; with a different seed the ranking may change. No statistical test is applied, so differences are not described as significant.</li>
           <li>Rankings depend on the toy LIF parameters and the synthetic, illustrative connectivity. They are model predictions, not evidence of biological causality.</li>

@@ -37,49 +37,49 @@ interface ClassSpec extends NeuronClass {
 // Colours: categorical palette (dark-surface steps), fixed class order.
 const CLASS_SPECS: ClassSpec[] = [
   {
-    id: 'SEN', label: 'Sensory afferent', transmitter: 'excitatory', color: '#3987e5',
+    id: 'SEN', role: 'Sensors that bring input in', label: 'Sensory afferent', transmitter: 'excitatory', color: '#3987e5',
     description: 'Input neurons receiving tonic background drive; entry point of the network.',
     perSide: 12, center: [-2.3, -1.2, 1.4], spread: [0.45, 0.35, 0.35],
     params: { tauM: 10 }, backgroundRateHz: 450,
   },
   {
-    id: 'PN', label: 'Projection neuron', transmitter: 'excitatory', color: '#d95926',
+    id: 'PN', role: 'Relay input to the next layer', label: 'Projection neuron', transmitter: 'excitatory', color: '#d95926',
     description: 'Relay sensory activity to integrative and convergence layers.',
     perSide: 8, center: [-1.7, -0.5, 0.7], spread: [0.3, 0.3, 0.3],
     params: {}, backgroundRateHz: 280,
   },
   {
-    id: 'LN', label: 'Local interneuron', transmitter: 'inhibitory', color: '#199e70',
+    id: 'LN', role: 'Quiet neighbouring relay cells', label: 'Local interneuron', transmitter: 'inhibitory', color: '#199e70',
     description: 'Inhibitory interneurons providing lateral inhibition onto projection neurons.',
     perSide: 6, center: [-2.0, -0.9, 0.2], spread: [0.3, 0.25, 0.3],
     params: { tauM: 12 }, backgroundRateHz: 250,
   },
   {
-    id: 'INT', label: 'Integrative interneuron', transmitter: 'excitatory', color: '#c98500',
+    id: 'INT', role: 'Combine signals from many relays', label: 'Integrative interneuron', transmitter: 'excitatory', color: '#c98500',
     description: 'Sparse, convergent layer that pools projection-neuron input.',
     perSide: 16, center: [-1.3, 0.9, -0.2], spread: [0.5, 0.35, 0.45],
     params: { tauM: 18, vThreshold: -48 }, backgroundRateHz: 280,
   },
   {
-    id: 'FBI', label: 'Feedback inhibitory', transmitter: 'inhibitory', color: '#d55181',
+    id: 'FBI', role: 'Calm the combining layer down', label: 'Feedback inhibitory', transmitter: 'inhibitory', color: '#d55181',
     description: 'Pools integrative activity and feeds inhibition back onto it (gain control).',
     perSide: 2, center: [-0.7, 1.4, 0.3], spread: [0.15, 0.15, 0.15],
     params: { tauM: 12 }, backgroundRateHz: 250,
   },
   {
-    id: 'CON', label: 'Convergence neuron', transmitter: 'excitatory', color: '#008300',
+    id: 'CON', role: 'Collect everything into one readout', label: 'Convergence neuron', transmitter: 'excitatory', color: '#008300',
     description: 'Read out integrative-layer activity and drive descending pathways.',
     perSide: 4, center: [-0.8, 0.2, -0.8], spread: [0.2, 0.25, 0.2],
     params: {}, backgroundRateHz: 330,
   },
   {
-    id: 'DN', label: 'Descending neuron', transmitter: 'excitatory', color: '#9085e9',
+    id: 'DN', role: 'Carry the readout toward movement', label: 'Descending neuron', transmitter: 'excitatory', color: '#9085e9',
     description: 'Output population: carries activity toward (simulated) motor circuits.',
     perSide: 5, center: [-0.35, -0.9, -1.1], spread: [0.15, 0.3, 0.2],
     params: {}, backgroundRateHz: 330,
   },
   {
-    id: 'PMN', label: 'Premotor neuron', transmitter: 'excitatory', color: '#e66767',
+    id: 'PMN', role: 'Final movement output', label: 'Premotor neuron', transmitter: 'excitatory', color: '#e66767',
     description: 'Output population downstream of descending neurons.',
     perSide: 6, center: [-0.6, -2.3, -1.4], spread: [0.25, 0.2, 0.25],
     params: { tauM: 12 }, backgroundRateHz: 300,
@@ -194,7 +194,7 @@ export function generateSampleNetworkDefinition(seed = NETWORK_SEED): NetworkDef
       description:
         'Rule-generated, bilaterally organised toy network (8 classes). Positions are layout coordinates in arbitrary units; weights are illustrative.',
     },
-    classes: CLASS_SPECS.map(({ id, label, description, transmitter: t, color }) => ({
+    classes: CLASS_SPECS.map(({ id, role, label, description, transmitter: t, color }) => ({ role,
       id, label, description, transmitter: t, color,
     })),
     neurons,

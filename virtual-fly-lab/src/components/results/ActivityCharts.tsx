@@ -102,7 +102,7 @@ export function MembraneChart({ series, network, neuronId, height = 240 }: { ser
       yaxis: { title: { text: 'Membrane potential (mV)' }, range: [Math.min(n.params.vReset, n.params.vRest) - 6, spikeY + 2.5 * series.length + 1] },
       shapes,
       annotations: [
-        { xref: 'paper', x: 1, xanchor: 'right', y: n.params.vThreshold, yanchor: 'bottom', text: `threshold ${n.params.vThreshold} mV`, showarrow: false, font: { size: 10, color: '#8a8e95' } },
+        { xref: 'paper', x: 1, xanchor: 'right', y: n.params.vThreshold, yanchor: 'bottom', text: `threshold ${n.params.vThreshold} mV`, showarrow: false, font: { size: 12, color: '#8a8e95' } },
       ],
       margin: { l: 56, r: 12, t: 30, b: 40 },
       legend: { orientation: 'h', x: 1, xanchor: 'right', y: 1.02, yanchor: 'bottom' },
@@ -110,7 +110,7 @@ export function MembraneChart({ series, network, neuronId, height = 240 }: { ser
     return { data, layout, available };
   }, [series, network, neuronId]);
 
-  if (!available) return <p className="py-6 text-center text-[12px] text-ink-500">Membrane potential was not recorded for this run.</p>;
+  if (!available) return <p className="py-6 text-center text-[13px] text-ink-500">Membrane potential was not recorded for this run.</p>;
   return <PlotlyChart data={data} layout={layout} height={height} ariaLabel={`Membrane potential of ${neuronId}`} />;
 }
 

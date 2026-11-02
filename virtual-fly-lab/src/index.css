@@ -6,7 +6,8 @@
   html, body, #root { height: 100%; }
   body {
     @apply bg-ink-950 text-ink-200 font-sans antialiased;
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.5;
     color-scheme: dark;
   }
   :focus-visible { outline: 2px solid #3987e5; outline-offset: 1px; }
@@ -14,20 +15,28 @@
   ::-webkit-scrollbar-thumb { background: #3a3d42; border-radius: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   input[type='number']::-webkit-inner-spin-button { opacity: 0.4; }
+  summary { cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
 }
 
 @layer components {
-  .panel-title { @apply text-2xs font-semibold uppercase tracking-[0.08em] text-ink-400; }
+  .panel-title { @apply text-[13px] font-medium text-ink-300; }
   .field-input {
-    @apply h-7 w-full rounded border border-ink-700 bg-ink-900 px-2 text-[12px] text-ink-100
+    @apply h-8 w-full rounded-md border border-ink-700 bg-ink-900 px-2.5 text-[13px] text-ink-100
       placeholder:text-ink-500 hover:border-ink-600 focus:border-accent focus:outline-none;
   }
   .btn {
-    @apply inline-flex h-7 items-center justify-center gap-1.5 rounded border px-2.5 text-[12px] font-medium
+    @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-md border px-3 text-[13px] font-medium
       transition-colors disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-default { @apply border-ink-700 bg-ink-850 text-ink-200 hover:border-ink-600 hover:bg-ink-800; }
   .btn-primary { @apply border-accent bg-accent text-white hover:bg-[#4a93ea]; }
   .btn-ghost { @apply border-transparent text-ink-300 hover:bg-ink-800 hover:text-ink-100; }
   .num { @apply font-mono tabular-nums; }
+  /* Signature: the numbered step marker that walks students through the lab. */
+  .step {
+    @apply inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-ink-600 bg-ink-850
+      font-mono text-[11px] font-medium text-ink-200;
+  }
+  .step-active { @apply border-accent bg-accent text-white; }
 }

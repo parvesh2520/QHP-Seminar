@@ -32,9 +32,9 @@ export function stimAnnotation(startMs: number, endMs: number): Partial<Layout>[
       xref: 'x',
       yref: 'paper',
       yanchor: 'bottom',
-      text: 'stimulus window',
+      text: 'push on',
       showarrow: false,
-      font: { size: 10, color: '#6f8fb8' },
+      font: { size: 12, color: '#6f8fb8' },
     },
   ];
 }

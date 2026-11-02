@@ -5,8 +5,8 @@ export function EmptyState({ icon: Icon, title, children }: { icon: LucideIcon; 
   return (
     <div className="flex h-full min-h-[160px] flex-col items-center justify-center gap-2 px-6 py-8 text-center">
       <Icon size={22} className="text-ink-500" aria-hidden />
-      <p className="text-[13px] font-medium text-ink-200">{title}</p>
-      {children && <div className="max-w-sm text-[12px] leading-relaxed text-ink-400">{children}</div>}
+      <p className="text-[14px] font-medium text-ink-200">{title}</p>
+      {children && <div className="max-w-sm text-[13px] leading-relaxed text-ink-400">{children}</div>}
     </div>
   );
 }

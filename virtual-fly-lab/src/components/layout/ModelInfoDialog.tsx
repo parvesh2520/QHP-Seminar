@@ -15,45 +15,54 @@ export const ModelInfoDialog = forwardRef<HTMLDialogElement>(function ModelInfoD
     <dialog
       ref={ref}
       aria-labelledby="model-info-title"
-      className="m-auto max-h-[85vh] w-[min(720px,calc(100vw-32px))] overflow-y-auto rounded-md border border-ink-700 bg-ink-900 p-0 text-ink-200 backdrop:bg-black/60"
+      className="m-auto max-h-[85vh] w-[min(720px,calc(100vw-32px))] overflow-y-auto rounded-lg border border-ink-700 bg-ink-900 p-0 text-ink-200 backdrop:bg-black/60"
       onClick={(e) => e.target === e.currentTarget && close()}
     >
-      <div className="sticky top-0 flex items-center justify-between border-b border-ink-800 bg-ink-900 px-5 py-3">
-        <h2 id="model-info-title" className="text-[14px] font-semibold text-ink-100">About the model</h2>
+      <div className="sticky top-0 flex items-center justify-between border-b border-ink-800 bg-ink-900 px-6 py-4">
+        <h2 id="model-info-title" className="text-[16px] font-semibold text-ink-100">How Virtual Fly Lab works</h2>
         <button type="button" className="btn btn-ghost h-6 px-1.5" onClick={close} aria-label="Close model information">
           <X size={14} />
         </button>
       </div>
-      <div className="space-y-4 px-5 py-4 text-[12.5px] leading-relaxed">
+      <div className="space-y-6 px-6 py-6 text-[14px] leading-relaxed">
         <section>
-          <h3 className="panel-title mb-1.5">Connectome Dataset & Provenance</h3>
+          <h3 className="panel-title mb-2">The idea in one minute</h3>
+          <ol className="space-y-2 text-ink-300">
+            <li className="flex gap-3"><span className="step">1</span><span>A fruit fly brain is a network of neurons. Each one fires short electrical pulses called <strong className="text-ink-100">spikes</strong> and passes them on to the neurons it is wired to.</span></li>
+            <li className="flex gap-3"><span className="step">2</span><span>You pick one neuron and <strong className="text-ink-100">excite</strong> it (make it fire more) or <strong className="text-ink-100">suppress</strong> it (make it fire less) for a short time.</span></li>
+            <li className="flex gap-3"><span className="step">3</span><span>The lab runs the brain twice, once untouched (the <strong className="text-ink-100">control</strong>) and once with your change, then counts the spikes in a region you choose. The difference shows how much that neuron matters.</span></li>
+          </ol>
+        </section>
+
+        <section>
+          <h3 className="panel-title mb-1.5">Where the brain data comes from</h3>
           {network.metadata.source === 'connectome-subset' ? (
             <ul className="list-disc space-y-1.5 pl-4 text-ink-300">
               <li>
-                <strong className="text-ink-100">FlyWire Adult Drosophila Connectome (v783)</strong>: Extracted from the complete EM reconstructed adult fruit fly brain (FlyWire Consortium, Princeton & Cambridge; published in <em>Nature 2024</em>: Dorkenwald et al., Schlegel et al.).
+                <strong className="text-ink-100">FlyWire adult fruit fly connectome (v783)</strong>: Extracted from the complete EM reconstructed adult fruit fly brain (FlyWire Consortium, Princeton & Cambridge; published in <em>Nature 2024</em>: Dorkenwald et al., Schlegel et al.).
               </li>
               <li>
-                <strong className="text-ink-100">Biological Circuits</strong>: Includes the complete Olfactory pathway (ORNs & Antennal Lobe PNs/LNs), Mushroom Body associative center (Kenyon Cells), the famous <strong className="text-ink-100">giant APL feedback inhibitory neuron</strong> (GABAergic gain control), Central Complex compass network (E-PG/P-EN), and Descending Motor command neurons (DNs).
+                <strong className="text-ink-100">Circuits included</strong>: Includes the complete smell pathway (ORNs & Antennal Lobe PNs/LNs), mushroom body learning centre (Kenyon Cells), the <strong className="text-ink-100">giant APL feedback inhibitory neuron</strong> (GABAergic gain control), central complex compass network (E-PG/P-EN), and descending motor command neurons (DNs).
               </li>
               <li>
-                <strong className="text-ink-100">Real IDs & Coordinates</strong>: Carries authentic 64-bit FlyWire root IDs (e.g. <span className="font-mono text-ink-200">7205759406...</span>), biological cell types, and spatial coordinates mapped to the FAFB/JRC2018 adult fly brain template.
+                <strong className="text-ink-100">Real IDs and positions</strong>: Carries authentic 64-bit FlyWire root IDs (e.g. <span className="font-mono text-ink-200">7205759406...</span>), biological cell types, and spatial coordinates mapped to the FAFB/JRC2018 adult fly brain template.
               </li>
               <li>
-                <strong className="text-ink-100">Synapse Calibration</strong>: While structural synapse counts are genuine, physiological conductances in the LIF model are uncalibrated voltage-equivalent proxies.
+                <strong className="text-ink-100">What is approximate</strong>: While structural synapse counts are genuine, physiological conductances in the LIF model are uncalibrated voltage-equivalent proxies.
               </li>
             </ul>
           ) : (
             <ul className="list-disc space-y-1 pl-4 text-ink-300">
               <li>The network is a <strong className="text-ink-100">synthetic demo network</strong> of {network.neurons.length} neurons and {network.connections.length} directed connections, generated from simple class-level wiring rules.</li>
               <li>Neuron IDs (VFL-xxxx) are synthetic placeholders. Connection weights are illustrative.</li>
-              <li>Use the dataset switcher in the top bar to activate the authentic <strong>FlyWire Adult Drosophila Brain Connectome</strong>.</li>
+              <li>Switch to the real fruit fly brain with the Brain menu in the top bar.</li>
             </ul>
           )}
         </section>
 
         <section>
-          <h3 className="panel-title mb-1.5">Leaky integrate-and-fire dynamics</h3>
-          <pre className="overflow-x-auto rounded border border-ink-800 bg-ink-950 px-3 py-2 font-mono text-[11.5px] text-ink-200">
+          <h3 className="panel-title mb-1.5">How each neuron is simulated</h3>
+          <pre className="overflow-x-auto rounded border border-ink-800 bg-ink-950 px-3 py-2 font-mono text-[13px] text-ink-200">
 {`τm · dV/dt = −(V − V_rest) + I_exc − I_inh + I_ext
 dI_exc/dt  = −I_exc / τ_exc      dI_inh/dt = −I_inh / τ_inh
 if V ≥ V_th:  spike, V ← V_reset, hold for t_ref`}
@@ -71,7 +80,7 @@ if V ≥ V_th:  spike, V ← V_reset, hold for t_ref`}
         </section>
 
         <section>
-          <h3 className="panel-title mb-1.5">Background input and reproducibility</h3>
+          <h3 className="panel-title mb-1.5">Background noise and repeatability</h3>
           <p className="text-ink-300">
             Each neuron receives Poisson background events (class-specific rate, weight <span className="num">{syn.backgroundWeight}</span> mV) from a seeded
             pseudo-random generator. Random numbers are drawn in a fixed order regardless of network state, so a baseline and an intervention run with the same seed
@@ -80,7 +89,7 @@ if V ≥ V_th:  spike, V ← V_reset, hold for t_ref`}
         </section>
 
         <section>
-          <h3 className="panel-title mb-1.5">Interventions</h3>
+          <h3 className="panel-title mb-1.5">Excite and suppress</h3>
           <ul className="list-disc space-y-1 pl-4 text-ink-300">
             <li><strong className="text-ink-100">Excite</strong>: a constant depolarising current I_ext = +intensity is applied to the target during the stimulation window.</li>
             <li><strong className="text-ink-100">Suppress</strong>: a constant hyperpolarising current I_ext = −intensity is applied instead. This reduces excitability; strong synaptic input can still drive spikes.</li>
@@ -89,7 +98,7 @@ if V ≥ V_th:  spike, V ← V_reset, hold for t_ref`}
         </section>
 
         <section>
-          <h3 className="panel-title mb-1.5">Comparisons</h3>
+          <h3 className="panel-title mb-1.5">Reading the results</h3>
           <p className="text-ink-300">
             Differences are raw spike-count differences between two deterministic runs. No statistical test is performed, so no change is labelled significant.
             Simulations run in a Web Worker in your browser; nothing is sent to a server.
