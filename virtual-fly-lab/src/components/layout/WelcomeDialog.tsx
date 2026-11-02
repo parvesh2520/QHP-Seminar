@@ -6,8 +6,8 @@ const SEEN_KEY = 'vfl-welcome-seen';
 
 const STEPS = [
   { title: 'Look at the brain', text: 'Every dot is a real neuron from a fruit fly brain. Lines show which neurons talk to each other.' },
-  { title: 'Change one neuron', text: 'Pick a neuron and switch it up (excite) or down (suppress) for a moment.' },
-  { title: 'See what changed', text: 'The brain is simulated twice, with and without your change. The charts show the difference.' },
+  { title: 'Change one neuron', text: 'Pick a neuron and turn it up or down for a moment.' },
+  { title: 'See what changed', text: 'The brain is simulated twice, with and without your change, and you see exactly which regions reacted.' },
 ];
 
 /** First-visit introduction with a one-click demo run. Shown once per browser session. */

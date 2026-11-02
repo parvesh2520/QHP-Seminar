@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
-import { ExperimentPanel } from './components/experiments/ExperimentPanel';
+import { LabPanel } from './components/lab/LabPanel';
 import { AppHeader } from './components/layout/AppHeader';
 import { WelcomeDialog } from './components/layout/WelcomeDialog';
-import { NetworkExplorer } from './components/network/NetworkExplorer';
-import { CandidatesPage } from './pages/CandidatesPage';
-import { ExperimentsPage } from './pages/ExperimentsPage';
-import { ExplorePage } from './pages/ExplorePage';
+import { NetworkViewer } from './components/network/NetworkViewer';
 import { useLabStore } from './store/labStore';
 
 export default function App() {
-  const tab = useLabStore((s) => s.tab);
   const selectNeuron = useLabStore((s) => s.selectNeuron);
 
   useEffect(() => {
@@ -25,24 +21,12 @@ export default function App() {
     <div className="flex h-full min-h-0 flex-col">
       <AppHeader />
       <WelcomeDialog />
-      <div
-        className={`grid min-h-0 flex-1 grid-cols-1 overflow-y-auto lg:overflow-hidden ${
-          tab === 'explore' ? 'lg:grid-cols-[300px_minmax(0,1fr)_340px]' : 'lg:grid-cols-[minmax(0,1fr)_340px]'
-        }`}
-      >
-        {/* The neuron list only helps while browsing the circuit; elsewhere it just crowds the results. */}
-        {tab === 'explore' && (
-          <aside className="order-2 min-h-0 border-ink-800 bg-ink-900 max-lg:h-[640px] lg:order-1 lg:border-r" aria-label="Network explorer">
-            <NetworkExplorer />
-          </aside>
-        )}
-        <main id="main-view" role="tabpanel" aria-labelledby={`tab-${tab}`} className="order-1 min-h-0 max-lg:min-h-[480px] lg:order-2">
-          {tab === 'explore' && <ExplorePage />}
-          {tab === 'experiments' && <ExperimentsPage />}
-          {tab === 'candidates' && <CandidatesPage />}
+      <div className="grid min-h-0 flex-1 grid-cols-1 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_400px] lg:overflow-hidden">
+        <main className="min-h-0 max-lg:h-[60vh]">
+          <NetworkViewer />
         </main>
-        <aside className="order-3 min-h-0 border-ink-800 bg-ink-900 max-lg:h-[720px] lg:border-l" aria-label="Experiment configuration">
-          <ExperimentPanel />
+        <aside className="min-h-0 border-ink-800 bg-ink-900 lg:border-l" aria-label="Experiment">
+          <LabPanel />
         </aside>
       </div>
     </div>

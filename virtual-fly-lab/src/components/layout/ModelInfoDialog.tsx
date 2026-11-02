@@ -1,11 +1,9 @@
 import { X } from 'lucide-react';
 import { forwardRef } from 'react';
 import { DEFAULT_LIF_PARAMS, DEFAULT_SYNAPSE_PARAMS, peakPspForWeight } from '../../simulation/lifModel';
-import { useLabStore } from '../../store/labStore';
 
 /** Native <dialog> describing the model, data and their limitations. */
 export const ModelInfoDialog = forwardRef<HTMLDialogElement>(function ModelInfoDialog(_, ref) {
-  const network = useLabStore((s) => s.network);
   const p = DEFAULT_LIF_PARAMS;
   const syn = DEFAULT_SYNAPSE_PARAMS;
   const pspPerUnit = peakPspForWeight(1, p.tauM, syn.tauSynExcMs);
@@ -36,7 +34,6 @@ export const ModelInfoDialog = forwardRef<HTMLDialogElement>(function ModelInfoD
 
         <section>
           <h3 className="panel-title mb-1.5">Where the brain data comes from</h3>
-          {network.metadata.source === 'connectome-subset' ? (
             <ul className="list-disc space-y-1.5 pl-4 text-ink-300">
               <li>
                 <strong className="text-ink-100">FlyWire adult fruit fly connectome (v783)</strong>: Extracted from the complete EM reconstructed adult fruit fly brain (FlyWire Consortium, Princeton & Cambridge; published in <em>Nature 2024</em>: Dorkenwald et al., Schlegel et al.).
@@ -51,13 +48,6 @@ export const ModelInfoDialog = forwardRef<HTMLDialogElement>(function ModelInfoD
                 <strong className="text-ink-100">What is approximate</strong>: While structural synapse counts are genuine, physiological conductances in the LIF model are uncalibrated voltage-equivalent proxies.
               </li>
             </ul>
-          ) : (
-            <ul className="list-disc space-y-1 pl-4 text-ink-300">
-              <li>The network is a <strong className="text-ink-100">synthetic demo network</strong> of {network.neurons.length} neurons and {network.connections.length} directed connections, generated from simple class-level wiring rules.</li>
-              <li>Neuron IDs (VFL-xxxx) are synthetic placeholders. Connection weights are illustrative.</li>
-              <li>Switch to the real fruit fly brain with the Brain menu in the top bar.</li>
-            </ul>
-          )}
         </section>
 
         <section>
