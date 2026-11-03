@@ -13,7 +13,7 @@ export function NetworkViewer() {
   const selectedId = useLabStore((s) => s.selectedNeuronId);
   const resetCamera = useLabStore((s) => s.resetCamera);
   const experiment = useLabStore((s) => s.experiment);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [restartToken, setRestartToken] = useState(0);
   const timeRef = useRef<HTMLSpanElement>(null);
 
@@ -22,6 +22,13 @@ export function NetworkViewer() {
   const selectedClass = selected ? classById.get(selected.classId) : undefined;
   const idx = selected ? network.indexById.get(selected.id)! : -1;
   const playback = experiment?.status === 'complete' ? (experiment.intervention ?? null) : null;
+
+  // Each new experiment starts paused at t = 0 until the user presses play.
+  const [shownPlayback, setShownPlayback] = useState(playback);
+  if (playback !== shownPlayback) {
+    setShownPlayback(playback);
+    setPlaying(false);
+  }
 
   return (
     <div className="relative h-full min-h-[360px] w-full overflow-hidden bg-ink-950" aria-label="Brain circuit map">
